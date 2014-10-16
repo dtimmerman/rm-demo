@@ -1,0 +1,20 @@
+{
+  "name": "rm-demo",
+  "version": "0.1.0",
+  "description": "Homework assignment for RebelMail",
+  "repository": {
+    "type": "git",
+    "url": "@todo"
+  },
+  "author": "Derek Timmerman <timmermanderek@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "@todo"
+  },
+  "homepage": "@todo",
+  "dependencies": {
+    "nodemailer" : "1.3.0",
+    "nodemailer-smtp-pool" : "0.1.8",
+    "nconf": "0.6.9"
+  }
+}

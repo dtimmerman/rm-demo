@@ -1,0 +1,5 @@
+# ignore vendor packages
+node_modules
+
+# ignore logs
+npm-debug.log
