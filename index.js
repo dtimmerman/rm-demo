@@ -1,34 +1,23 @@
-var nodemailer = require('nodemailer');
-var smtpPool = require('nodemailer-smtp-pool');
+var express = require('express');
+var request = require('request');
 var config = require('nconf');
 
 config.argv().env().file({
   file: 'config.json'
 });
 
-var transporter = nodemailer.createTransport(smtpPool({
-  port: 25,
-  auth: {
-    user: config.get('mailgun:smtpOptions:user'),
-    pass: config.get('mailgun:smtpOptions:pass')
-  },
-  maxConnections: 5,
-  maxMessages: 10,
-  debug: true
-}))
+var mailgun = require('mailgun-js')({
+  apiKey: config.get('mailgun:apiKey'),
+  domain: config.get('mailgun:domain')
+});
 
-var mailOptions = {
-  from: config.get('mailgun:mail_options:from'),
-  to: 'timmermanderek@gmail.com', // will be dynamic when rest api is in place
-  subject: 'foo bar',
-  text: 'bar foo'
+var data = {
+  from: 'Derek <timmermanderek@gmail.com>',
+  to: 'timmermanderek@gmail.com',
+  subject: 'Hello',
+  text: 'Testing mailgun'
 };
 
-transporter.sendMail(mailOptions, function (err, info) {
-  if (err) {
-    console.log('Error: ' + err);
-  }
-  else {
-    console.log('Response: ' + info);
-  }
+mailgun.messages().send(data, function (error, body) {
+  console.log(body);
 });
