@@ -16,7 +16,7 @@ module.exports = function(app, req, res) {
     Recipient.findById(recipientID, function(err, doc) {
       res.writeHead(200);
       resContent.status = 'success';
-      resContent.data = doc;
+      resContent.data = [doc];
       res.write(JSON.stringify(resContent));
       res.end();
     });
@@ -24,7 +24,13 @@ module.exports = function(app, req, res) {
   // get all recipients
   } else {
 
-    console.log('all recipients');
+    Recipient.find({}, function(err, doc) {
+      res.writeHead(200);
+      resContent.status = 'success';
+      resContent.data = doc;
+      res.write(JSON.stringify(resContent));
+      res.end();
+    })
 
   }
 
