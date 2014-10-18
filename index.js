@@ -1,24 +1,10 @@
 var config = require('nconf');
+var express = require('express');
+var app = express();
 
 config.argv().env().file({
   file: 'config.json'
 });
-
-var express = require('express');
-// var bodyParser = require('body-parser');
-// var fs = require('fs');
-var handlebars = require('handlebars');
-var mailgun = require('mailgun-js')({
-  apiKey: config.get('mailgun:apiKey'),
-  domain: config.get('mailgun:domain')
-});
-
-var app = express();
-// var urlencoded = bodyParser.urlencoded({
-//   extended: false
-// });
-// var source = fs.readFileSync('template.hbs', 'utf8');
-// var template = handlebars.compile(source);
 
 app.disable('x-powered-by');
 app.listen(3000);
@@ -35,5 +21,15 @@ app.get('/api/v1/recipient/:recipientID', function(req, res) {
 
 // Create and send message
 app.post('/api/v1/message', function(req, res) {
-  // require('./controllers/message/post');
+  require('./controllers/message/post');
+});
+
+// Create form
+app.post('/api/v1/form', function(req, res) {
+
+});
+
+// Create form response
+app.post('/api/v1/form/:formID', function(req, res) {
+  console.log();
 });

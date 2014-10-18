@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var urlencoded = bodyParser.urlencoded({
   extended: false
 });
+
 var Recipient = require('../../models/recipient').Recipient;
 
 module.exports = function(app, req, res) {
