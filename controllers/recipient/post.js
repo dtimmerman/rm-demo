@@ -1,11 +1,10 @@
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var Recipient = require('../../models/recipient').Recipient;
 
 var urlencoded = bodyParser.urlencoded({
   extended: false
 });
-
-var Recipient = require('../../models/recipient').Recipient;
 
 module.exports = function(app, req, res) {
 
@@ -42,11 +41,13 @@ module.exports = function(app, req, res) {
         email: email
       });
 
-      res.writeHead(200);
-      resContent.status = 'success';
-      resContent.data = recipient;
-      res.write(JSON.stringify(resContent));
-      res.end();
+      recipient.save(function(err, doc) {
+        res.writeHead(200);
+        resContent.status = 'success';
+        resContent.data = recipient;
+        res.write(JSON.stringify(resContent));
+        res.end();
+      });
 
     }
 

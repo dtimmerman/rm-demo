@@ -1,10 +1,13 @@
 var config = require('nconf');
 var express = require('express');
+var mongoose = require('mongoose');
 var app = express();
 
 config.argv().env().file({
   file: 'config.json'
 });
+
+mongoose.connect('mongodb://localhost/rm');
 
 app.disable('x-powered-by');
 app.listen(3000);
