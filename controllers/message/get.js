@@ -1,19 +1,19 @@
 var mongoose = require('mongoose');
-var Recipient = require('../../models/recipient').Recipient;
+var Message = require('../../models/message').Message;
 
 module.exports = function(app, req, res) {
 
-  var recipientID = typeof req.params.recipientID !== 'undefined' ? req.params.recipientID : false;
+  var messageID = typeof req.params.messageID !== 'undefined' ? req.params.messageID : false;
 
   var resContent = {
     status: null,
     data: {}
   };
 
-  // get single recipient
-  if (recipientID) {
+  // get single message
+  if (messageID) {
 
-    Recipient.findById(recipientID, function(err, doc) {
+    Message.findById(messageID, function(err, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = [doc];
@@ -21,10 +21,10 @@ module.exports = function(app, req, res) {
       res.end();
     });
 
-  // get all recipients
+  // get all messages
   } else {
 
-    Recipient.find({}, function(err, doc) {
+    Message.find({}, function(err, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = doc;
