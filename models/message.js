@@ -6,7 +6,11 @@ var MessageSchema = new mongoose.Schema({
   recipientID: {},
   subject: String,
   body: String,
-  formID: {}
+  formID: {},
+  time: {
+    type: Date,
+    default: Date.now
+  }
 }, {
   versionKey: false
 });
