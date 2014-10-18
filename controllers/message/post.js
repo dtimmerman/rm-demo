@@ -19,43 +19,54 @@ module.exports = function(app, req, res) {
 
   urlencoded(req, res, function() {
 
+    // params
     var from = typeof req.body.from !== 'undefined' ? req.body.from : false;
+    var to = typeof req.body.to !== 'undefined' ? req.body.to : false;
     var recipientID = typeof req.body.from !== 'undefined' ? req.body.to : false;
     var subject = typeof req.body.subject !== 'undefined' ? req.body.subject : '';
     var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
+    var formID = typeof req.body.formID !== 'undefined' ? req.body.formID : false;
 
+    // other vars
     var resContent = {
       status: null,
       data: null
     };
 
-    var mailgunOpts;
+    var validates = true;
 
-    if (!from || !to || !body) {
+    var mailgunOpts;
+    var message;
+
+    // validation
+    if (!to && !recipientID ) {
+      validates = false;
+      resContent.data.to = 'Provide either "to" or "recipientID" parameter.';
+      resContent.data.recipientID = 'Provide either "to" or "recipientID" parameter.';
+    }
+    if (!from) {
+      validates = false;
+      resContent.data.to = 'Missing "to" parameter.';
+    }
+
+    // maybe send
+    if (!validates) {
+
       res.writeHead(400);
       resContent.status = 'fail';
-      resContent.data = {};
-      if (!from) {
-        resContent.data.from = 'Missing "from" parameter.';
-      }
-      if (!to) {
-        resContent.data.to = 'Missing "to" parameter.';
-      }
-      if (!body) {
-        resContent.data.body = 'Missing "body" parameter.';
-      }
       res.write(JSON.stringify(resContent));
       res.end();
 
-      return;
-
     } else {
 
-      // although endpoint accepts & expects body param, hard coding
-      // body val for now
       body = template({
         name: 'Derek'
       });
+
+      // need async
+      if (recipientID) {
+
+      }
 
       mailgunOpts = {
         from: from,
@@ -65,6 +76,16 @@ module.exports = function(app, req, res) {
       };
 
       mailgun.messages().send(mailgunOpts, function(error, body) {
+
+        message = new Message({
+          from: from,
+          to: to,
+          recipientID: recipientID,
+          subject: subject,
+          body: body,
+          formID: formID
+        });
+
         res.writeHead(200);
         resContent.status = 'success';
         resContent.data = {};
