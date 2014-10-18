@@ -29,7 +29,6 @@ POST http://localhost/api/v1/message
 Params:
 * [recipientID]
 * [from]
-* [to]
 * [subject]
 * [body]
 * [templateID]
