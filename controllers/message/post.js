@@ -20,7 +20,7 @@ module.exports = function(app, req, res) {
   urlencoded(req, res, function() {
 
     var from = typeof req.body.from !== 'undefined' ? req.body.from : false;
-    var to = typeof req.body.from !== 'undefined' ? req.body.to : false;
+    var recipientID = typeof req.body.from !== 'undefined' ? req.body.to : false;
     var subject = typeof req.body.subject !== 'undefined' ? req.body.subject : '';
     var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
 
