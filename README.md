@@ -20,25 +20,30 @@ API endpoints are structured as http://domain/api/v1/foobar. In production this 
 
 ### Accept a form submission from a sent message
 
-POST http://localhost/forms/v1/respond/[messageid]
+POST http://localhost/forms/v1/respond/[messageID]
 
 ### Enqueue a message for delivery
 
 POST http://localhost/api/v1/message
 
 Params:
+* [recipientID]
 * [from]
 * [to]
 * [subject]
 * [body]
-* [templateId]
+* [templateID]
 * [templateVals]
 
 ### Retrieve a sent message
 
-GET http://localhost/api/v1/message/[messageid]
+GET http://localhost/api/v1/message/[messageID]
 
 No params
+
+### Retrieve a recipient
+
+GET http://localhost/api/v1/recipient/[recipientID]
 
 # 5. TODO
 

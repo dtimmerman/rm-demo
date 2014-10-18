@@ -23,6 +23,41 @@ var template = handlebars.compile(source);
 app.disable('x-powered-by');
 app.listen(3000);
 
+// Create recipient
+app.post('/api/v1/recipient', function(req, res) {
+
+  urlencoded(req, res, function() {
+
+    var name = typeof req.body.name !== 'undefined' ? req.body.name : false;
+    var email = typeof req.body.email !== 'undefined' ? req.body.email : false;
+
+    if (!name || !email) {
+      res.writeHead(400);
+      resContent.status = 'fail';
+      resContent.data = {};
+      if (!from) {
+        resContent.data.from = 'Missing "name" parameter.';
+      }
+      if (!to) {
+        resContent.data.to = 'Missing "email" parameter.';
+      }
+      res.write(JSON.stringify(resContent));
+      res.end();
+
+      return;
+
+    }
+
+  });
+
+});
+
+// Get recipient
+app.get('/api/v1/recipient/:recipientID', function(req, res) {
+  console.log(req.params.recipientID);
+});
+
+// Create and send message
 app.post('/api/v1/message', function(req, res) {
 
   urlencoded(req, res, function() {
@@ -39,7 +74,6 @@ app.post('/api/v1/message', function(req, res) {
 
     var mailgunOpts;
 
-    // INVALID REQUEST
     if (!from || !to || !body) {
       res.writeHead(400);
       resContent.status = 'fail';
@@ -59,8 +93,6 @@ app.post('/api/v1/message', function(req, res) {
       return;
 
     }
-
-    // VALID REQUEST
 
     // although endpoint accepts & expects body param, hard coding
     // body val for now
@@ -88,3 +120,5 @@ app.post('/api/v1/message', function(req, res) {
   });
 
 });
+
+app.post('/forms/v1/respond/:formID');
