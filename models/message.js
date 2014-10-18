@@ -7,7 +7,7 @@ var MessageSchema = new mongoose.Schema({
   subject: String,
   body: String,
   formID: {},
-  time: {
+  created: {
     type: Date,
     default: Date.now
   }
