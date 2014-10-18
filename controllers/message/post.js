@@ -37,14 +37,14 @@ module.exports = function(app, req, res) {
     };
     var validates = true;
     var recipient = false;
+
     var message;
+    var body;
 
     async.series([
 
       // validation, maybe load recipient
       function(callback) {
-
-        console.log('validation');
 
         if (!to && !recipientID ) {
           validates = false;
@@ -63,18 +63,16 @@ module.exports = function(app, req, res) {
         if (recipientID) {
           Recipient.findById(recipientID, function(err, doc) {
             recipient = doc;
-            callback(null);
+            callback();
           });
         } else {
-          callback(null);
+          callback();
         }
 
       },
 
       // write for invalid response
       function(callback) {
-
-        console.log('invalid response');
 
         if (!validates) {
           console.log('doesnt validate');
@@ -92,9 +90,7 @@ module.exports = function(app, req, res) {
       // mailgun request
       function(callback) {
 
-        console.log('mailgun');
-
-        var body = template({
+        body = template({
           name: 'Personname'
         });
 
@@ -117,8 +113,6 @@ module.exports = function(app, req, res) {
       // save message
       function(callback) {
 
-        console.log('save message');
-
         message = new Message({
           from: from,
           to: to,
@@ -130,18 +124,20 @@ module.exports = function(app, req, res) {
 
         message.save();
 
+        callback();
+
       },
 
       // send response
       function(callback) {
-
-        console.log('client response');
 
         res.writeHead(200);
         resContent.status = 'success';
         resContent.data = [message];
         res.write(JSON.stringify(resContent));
         res.end();
+
+        callback();
 
       }
 

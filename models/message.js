@@ -3,10 +3,10 @@ var mongoose = require("mongoose");
 var MessageSchema = new mongoose.Schema({
   from: String,
   to: String,
-  recipientID: Schema.Types.Mixed,
+  recipientID: {},
   subject: String,
   body: String,
-  formID: Schema.Types.Mixed
+  formID: {}
 }, {
   versionKey: false
 });
