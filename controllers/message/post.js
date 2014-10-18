@@ -1,5 +1,8 @@
+var async = require('async');
 var fs = require('fs');
 var mongoose = require('mongoose');
+var Recipient = require('../../models/recipient').Recipient;
+var Message = require('../../models/message').Message;
 var bodyParser = require('body-parser');
 var config = require('nconf');
 var handlebars = require('handlebars');
@@ -22,60 +25,99 @@ module.exports = function(app, req, res) {
     // params
     var from = typeof req.body.from !== 'undefined' ? req.body.from : false;
     var to = typeof req.body.to !== 'undefined' ? req.body.to : false;
-    var recipientID = typeof req.body.from !== 'undefined' ? req.body.to : false;
+    var recipientID = typeof req.body.recipientID !== 'undefined' ? req.body.recipientID : false;
     var subject = typeof req.body.subject !== 'undefined' ? req.body.subject : '';
-    var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
+    // var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
     var formID = typeof req.body.formID !== 'undefined' ? req.body.formID : false;
 
     // other vars
     var resContent = {
       status: null,
-      data: null
+      data: {}
     };
-
     var validates = true;
-
-    var mailgunOpts;
+    var recipient = false;
     var message;
 
-    // validation
-    if (!to && !recipientID ) {
-      validates = false;
-      resContent.data.to = 'Provide either "to" or "recipientID" parameter.';
-      resContent.data.recipientID = 'Provide either "to" or "recipientID" parameter.';
-    }
-    if (!from) {
-      validates = false;
-      resContent.data.to = 'Missing "to" parameter.';
-    }
+    async.series([
 
-    // maybe send
-    if (!validates) {
+      // validation, maybe load recipient
+      function(callback) {
 
-      res.writeHead(400);
-      resContent.status = 'fail';
-      res.write(JSON.stringify(resContent));
-      res.end();
+        console.log('validation');
 
-    } else {
+        if (!to && !recipientID ) {
+          validates = false;
+          resContent.data.to = 'Provide either "to" or "recipientID" parameter.';
+          resContent.data.recipientID = 'Provide either "to" or "recipientID" parameter.';
+        }
+        if (!from) {
+          validates = false;
+          resContent.data.to = 'Missing "to" parameter.';
+        }
+        if (!subject) {
+          validates = false;
+          resContent.data.subject = 'Missing "subject" parameter.';
+        }
 
-      body = template({
-        name: 'Derek'
-      });
+        if (recipientID) {
+          Recipient.findById(recipientID, function(err, doc) {
+            recipient = doc;
+            callback(null);
+          });
+        } else {
+          callback(null);
+        }
 
-      // need async
-      if (recipientID) {
+      },
 
-      }
+      // write for invalid response
+      function(callback) {
 
-      mailgunOpts = {
-        from: from,
-        to: to,
-        subject: subject,
-        html: body
-      };
+        console.log('invalid response');
 
-      mailgun.messages().send(mailgunOpts, function(error, body) {
+        if (!validates) {
+          console.log('doesnt validate');
+          res.writeHead(400);
+          resContent.status = 'fail';
+          res.write(JSON.stringify(resContent));
+          res.end();
+          callback(true);
+        } else {
+          callback();
+        }
+
+      },
+
+      // mailgun request
+      function(callback) {
+
+        console.log('mailgun');
+
+        var body = template({
+          name: 'Personname'
+        });
+
+        if (recipient) {
+          to = recipient.email;
+        }
+        var mailgunOpts = {
+          from: from,
+          to: to,
+          subject: subject,
+          html: body
+        };
+
+        mailgun.messages().send(mailgunOpts, function(error, body) {
+          callback();
+        });
+
+      },
+
+      // save message
+      function(callback) {
+
+        console.log('save message');
 
         message = new Message({
           from: from,
@@ -86,16 +128,24 @@ module.exports = function(app, req, res) {
           formID: formID
         });
 
+        message.save();
+
+      },
+
+      // send response
+      function(callback) {
+
+        console.log('client response');
+
         res.writeHead(200);
         resContent.status = 'success';
-        resContent.data = {};
-        resContent.data.mailgun = body;
-        resContent.data.messageId = '000';
+        resContent.data = [message];
         res.write(JSON.stringify(resContent));
         res.end();
-      });
 
-    }
+      }
+
+    ]);
 
   });
 
