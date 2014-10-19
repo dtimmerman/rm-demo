@@ -74,6 +74,10 @@ module.exports = function(app, req, res) {
 
         form.save();
 
+        res.writeHead(200);
+        resContent.status = 'success';
+        resContent.data = [form];
+        res.write(JSON.stringify(resContent));
         res.end();
 
         callback();
