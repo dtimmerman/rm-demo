@@ -1,0 +1,17 @@
+[
+  {
+    "name" : "firstname",
+    "label" : "First Name",
+    "type" : "text"
+  },
+  {
+    "name" : "lastname",
+    "label" : "Last Name",
+    "type" : "text"
+  },
+  {
+    "name" : "message",
+    "label" : "Message",
+    "type" : "textarea"
+  }
+]

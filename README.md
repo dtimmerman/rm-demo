@@ -20,11 +20,8 @@ API endpoints are structured as http://domain/api/v1/foobar. In production this 
 
 - validator.js
 - exception handling
-- data store
 - mailgun callback error handling
-- mailgun callback save sent message id to data store
 - unit test
-- session store
 - email form html
 - tracker pixel
 - form response endpoint
