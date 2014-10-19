@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var Form = require('../../models/form').Form;
 
+var resContent = {
+  status: null,
+  data: {}
+};
+
 module.exports = function(app, req, res) {
 
   var formID = typeof req.params.formID !== 'undefined' ? req.params.formID : false;
-
-  var resContent = {
-    status: null,
-    data: {}
-  };
 
   // get single message
   if (formID) {
