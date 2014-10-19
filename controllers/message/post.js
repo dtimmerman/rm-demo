@@ -70,6 +70,7 @@ module.exports = function(app, req, res) {
         if (recipientID) {
           Recipient.findById(recipientID, function(err, doc) {
             recipient = doc;
+            to = recipient.email;
             asyncNext();
           });
         } else {
@@ -81,9 +82,13 @@ module.exports = function(app, req, res) {
       // maybe load form
       function(asyncNext) {
 
-        if (formID) {
+        if (formID && (recipient || to)) {
           Form.findById(formID, function(err, doc) {
             form = doc;
+            form.recipientEmail = to;
+            if (recipient) {
+              form.recipientID = recipient._id;
+            }
             asyncNext();
           })
         } else {
@@ -116,9 +121,10 @@ module.exports = function(app, req, res) {
           });
         }
 
-        if (recipient) {
-          to = recipient.email;
-        }
+        console.log('body, form html created');
+        console.log(body);
+        asyncNext(true);
+        res.end();
 
         message = new Message({
           from: from,

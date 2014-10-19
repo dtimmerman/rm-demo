@@ -18,12 +18,23 @@ var FormSchema = new mongoose.Schema({
   versionKey: false
 });
 
+FormSchema.virtual('recipientID');
+
+FormSchema.virtual('recipientEmail');
+
 FormSchema.virtual('html').get(function() {
 
+  console.log('getting');
+
   var fields = this.fields;
+  var formID = this._id;
+  var recipientID = this.recipientID;
+  var recipientEmail = this.recipientEmail;
   var htmlFields = '';
 
   var html;
+
+  console.log(recipientID, typeof recipientID, typeof recipientEmail, recipientEmail);
 
   for (var key in fields) {
     var field = fields[key];
@@ -31,7 +42,7 @@ FormSchema.virtual('html').get(function() {
     htmlFields = htmlFields + fieldHtml;
   }
 
-  return makeFormHtml(htmlFields, this._id, '123456', 'timmermanderek@gmail.com');
+  return makeFormHtml(htmlFields, formID, recipientID, recipientEmail);
 
 });
 
