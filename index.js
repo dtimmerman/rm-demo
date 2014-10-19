@@ -7,7 +7,7 @@ config.argv().env().file({
   file: 'config.json'
 });
 
-mongoose.connect('mongodb://localhost/rm');
+mongoose.connect(config.get('mongoose:connectionUrl'));
 
 app.disable('x-powered-by');
 app.listen(3000);
