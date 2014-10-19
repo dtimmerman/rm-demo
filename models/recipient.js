@@ -7,8 +7,6 @@ var RecipientSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-}, {
-  versionKey: false
 });
 
 var Recipient = mongoose.model('Recipient', RecipientSchema);

@@ -21,7 +21,6 @@ API endpoints are structured as http://domain/api/v1/foobar. In production this 
 # 5. TODO
 
 definitely:
-- rework message model to create html like form model
 - form response endpoint
 - admin ui
 - mongoose-fakery
@@ -33,3 +32,7 @@ hopefully:
 - exception handling
 - tracker pixel
 - validator.js
+
+# 6. NOTES
+
+- Form model fields are not searchable, neither are FormResponse model fields. This could be fixed by making a separate FormField model. So a "form" would consist of a Form object plus all the FormField objects it's related to. Ditto for FormResponse.

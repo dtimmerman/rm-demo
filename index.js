@@ -27,7 +27,7 @@ app.post('/api/v1/recipient', function(req, res) {
 // MESSAGE
 
 // Get message
-app.get('/api/v1/message/:messageID', function(req, res) {
+app.get('/api/v1/message/:messageID?', function(req, res) {
   require('./controllers/message/get')(app, req, res);
 });
 
@@ -39,7 +39,7 @@ app.post('/api/v1/message', function(req, res) {
 // FORM
 
 // Get form
-app.get('/api/v1/form/:formID', function(req, res) {
+app.get('/api/v1/form/:formID?', function(req, res) {
   require('./controllers/form/get')(app, req, res);
 });
 
@@ -49,7 +49,7 @@ app.post('/api/v1/form', function(req, res) {
 });
 
 // Get form response
-app.get('/api/v1/form/response/:responseID', function(req, res) {
+app.get('/api/v1/form/response/:responseID?', function(req, res) {
   require('./controllers/form/response/get')(app, req, res);
 });
 

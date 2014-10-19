@@ -11,8 +11,6 @@ var MessageSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-}, {
-  versionKey: false
 });
 
 var Message = mongoose.model('Message', MessageSchema);

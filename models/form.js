@@ -14,8 +14,6 @@ var FormSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
-}, {
-  versionKey: false
 });
 
 FormSchema.set('toJSON', { virtuals: true })
@@ -46,8 +44,6 @@ FormSchema.virtual('html').get(function() {
   var recipientEmail = this.recipientEmail;
   var messageID = this.messageID;
   var htmlFields = '';
-
-  var html;
 
   for (var key in fields) {
     var field = fields[key];
