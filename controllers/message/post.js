@@ -66,7 +66,6 @@ module.exports = function(app, req, res) {
       // maybe load recipient
       // (this and form load could be happening in parallel)
       function(asyncNext) {
-
         if (recipientID) {
           Recipient.findById(recipientID, function(err, doc) {
             recipient = doc;
@@ -120,11 +119,6 @@ module.exports = function(app, req, res) {
             form: form.html
           });
         }
-
-        console.log('body, form html created');
-        console.log(body);
-        asyncNext(true);
-        res.end();
 
         message = new Message({
           from: from,

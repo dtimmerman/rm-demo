@@ -18,13 +18,21 @@ var FormSchema = new mongoose.Schema({
   versionKey: false
 });
 
-FormSchema.virtual('recipientID');
+FormSchema.set('toJSON', { virtuals: true })
 
-FormSchema.virtual('recipientEmail');
+FormSchema.virtual('recipientID').get(function() {
+  return this._recipientID;
+}).set(function(val) {
+  this._recipientID = val;
+});
+
+FormSchema.virtual('recipientEmail').get(function() {
+  return this._recipientEmail;
+}).set(function(val) {
+  this._recipientEmail = val;
+});
 
 FormSchema.virtual('html').get(function() {
-
-  console.log('getting');
 
   var fields = this.fields;
   var formID = this._id;
@@ -33,8 +41,6 @@ FormSchema.virtual('html').get(function() {
   var htmlFields = '';
 
   var html;
-
-  console.log(recipientID, typeof recipientID, typeof recipientEmail, recipientEmail);
 
   for (var key in fields) {
     var field = fields[key];
