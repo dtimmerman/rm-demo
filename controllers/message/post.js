@@ -67,7 +67,7 @@ module.exports = function(app, req, res) {
       // (this and form load could be happening in parallel)
       function(asyncNext) {
         if (recipientID) {
-          Recipient.findById(recipientID, function(err, doc) {
+          Recipient.findById(recipientID, function(e, doc) {
             recipient = doc;
             to = recipient.email;
             asyncNext();
@@ -82,7 +82,7 @@ module.exports = function(app, req, res) {
       function(asyncNext) {
 
         if (formID && (recipient || to)) {
-          Form.findById(formID, function(err, doc) {
+          Form.findById(formID, function(e, doc) {
             form = doc;
             form.recipientEmail = to;
             if (recipient) {
@@ -97,6 +97,7 @@ module.exports = function(app, req, res) {
       },
 
       // write for invalid response
+      // (this could be moved to async.series complete callback)
       function(asyncNext) {
 
         if (!validates) {
@@ -111,25 +112,44 @@ module.exports = function(app, req, res) {
 
       },
 
-      // create message, pair message with form and recipient
+      // create message, pair message with recipient & form
       function(asyncNext) {
-
-        if (!body) {
-          body = template({
-            form: form.html
-          });
-        }
 
         message = new Message({
           from: from,
           to: to,
           recipientID: recipientID,
           subject: subject,
-          body: body,
+          body: body ? body : '',
           formID: formID
         });
 
-        asyncNext();
+        message.save(function(e, doc) {
+          if (form) {
+            form.messageID = doc._id;
+          }
+          asyncNext();
+        });
+
+      },
+
+      // re-save message with compiled body html
+      function(asyncNext) {
+
+        if (!body) {
+
+          body = template({
+            form: form.html
+          });
+          message.body = body;
+          message.save(function(e, doc) {
+            console.log(message);
+            asyncNext();
+          });
+
+        } else {
+          asyncNext();
+        }
 
       },
 
@@ -144,7 +164,6 @@ module.exports = function(app, req, res) {
         };
 
         mailgun.messages().send(mailgunOpts, function(error, body) {
-          message.save();
           asyncNext();
         });
 

@@ -32,12 +32,19 @@ FormSchema.virtual('recipientEmail').get(function() {
   this._recipientEmail = val;
 });
 
+FormSchema.virtual('messageID').get(function() {
+  return this._messageID;
+}).set(function(val) {
+  this._messageID = val;
+});
+
 FormSchema.virtual('html').get(function() {
 
   var fields = this.fields;
   var formID = this._id;
   var recipientID = this.recipientID;
   var recipientEmail = this.recipientEmail;
+  var messageID = this.messageID;
   var htmlFields = '';
 
   var html;
@@ -48,11 +55,11 @@ FormSchema.virtual('html').get(function() {
     htmlFields = htmlFields + fieldHtml;
   }
 
-  return makeFormHtml(htmlFields, formID, recipientID, recipientEmail);
+  return makeFormHtml(htmlFields, formID, recipientID, recipientEmail, messageID);
 
 });
 
-function makeFormHtml(fields, formID, recipientID, recipientEmail) {
+function makeFormHtml(fields, formID, recipientID, recipientEmail, messageID) {
 
   var templateSource = fs.readFileSync('views/form/form.hbs', 'utf8');
   var template = handlebars.compile(templateSource);
@@ -62,7 +69,8 @@ function makeFormHtml(fields, formID, recipientID, recipientEmail) {
     fields: fields,
     formID: formID,
     recipientID: recipientID,
-    recipientEmail: recipientEmail
+    recipientEmail: recipientEmail,
+    messageID: messageID
   });
 
 }
