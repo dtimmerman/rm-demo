@@ -27,7 +27,7 @@ module.exports = function(app, req, res) {
     var to = typeof req.body.to !== 'undefined' ? req.body.to : false;
     var recipientID = typeof req.body.recipientID !== 'undefined' ? req.body.recipientID : false;
     var subject = typeof req.body.subject !== 'undefined' ? req.body.subject : '';
-    // var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
+    var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
     var formID = typeof req.body.formID !== 'undefined' ? req.body.formID : false;
 
     // other vars
@@ -39,12 +39,11 @@ module.exports = function(app, req, res) {
     var recipient = false;
 
     var message;
-    var body;
 
     async.series([
 
       // validation, maybe load recipient
-      function(callback) {
+      function(asyncNext) {
 
         if (!to && !recipientID ) {
           validates = false;
@@ -63,16 +62,16 @@ module.exports = function(app, req, res) {
         if (recipientID) {
           Recipient.findById(recipientID, function(err, doc) {
             recipient = doc;
-            callback();
+            asyncNext();
           });
         } else {
-          callback();
+          asyncNext();
         }
 
       },
 
       // write for invalid response
-      function(callback) {
+      function(asyncNext) {
 
         if (!validates) {
           console.log('doesnt validate');
@@ -80,15 +79,15 @@ module.exports = function(app, req, res) {
           resContent.status = 'fail';
           res.write(JSON.stringify(resContent));
           res.end();
-          callback(true);
+          asyncNext(true);
         } else {
-          callback();
+          asyncNext();
         }
 
       },
 
-      // mailgun request
-      function(callback) {
+      // create message
+      function(asyncNext) {
 
         body = template({
           name: 'Personname'
@@ -97,21 +96,6 @@ module.exports = function(app, req, res) {
         if (recipient) {
           to = recipient.email;
         }
-        var mailgunOpts = {
-          from: from,
-          to: to,
-          subject: subject,
-          html: body
-        };
-
-        mailgun.messages().send(mailgunOpts, function(error, body) {
-          callback();
-        });
-
-      },
-
-      // save message
-      function(callback) {
 
         message = new Message({
           from: from,
@@ -122,14 +106,29 @@ module.exports = function(app, req, res) {
           formID: formID
         });
 
-        message.save();
+        asyncNext();
 
-        callback();
+      },
+
+      // mailgun request
+      function(asyncNext) {
+
+        var mailgunOpts = {
+          from: from,
+          to: to,
+          subject: subject,
+          html: body
+        };
+
+        mailgun.messages().send(mailgunOpts, function(error, body) {
+          message.save();
+          asyncNext();
+        });
 
       },
 
       // send response
-      function(callback) {
+      function(asyncNext) {
 
         res.writeHead(200);
         resContent.status = 'success';
@@ -137,7 +136,7 @@ module.exports = function(app, req, res) {
         res.write(JSON.stringify(resContent));
         res.end();
 
-        callback();
+        asyncNext();
 
       }
 

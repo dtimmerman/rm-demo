@@ -26,7 +26,7 @@ module.exports = function(app, req, res) {
     async.series([
 
       // validation
-      function(callback) {
+      function(asyncNext) {
 
         if (!name) {
           validates = false;
@@ -45,27 +45,27 @@ module.exports = function(app, req, res) {
           }
         }
 
-        callback();
+        asyncNext();
 
       },
 
       // write for invalid response
-      function(callback) {
+      function(asyncNext) {
 
         if (!validates) {
           res.writeHead(400);
           resContent.status = 'fail';
           res.write(JSON.stringify(resContent));
           res.end();
-          callback(true);
+          asyncNext(true);
         } else {
-          callback();
+          asyncNext();
         }
 
       },
 
       // create form
-      function(callback) {
+      function(asyncNext) {
 
         form = new Form({
           name: name,
@@ -80,7 +80,7 @@ module.exports = function(app, req, res) {
         res.write(JSON.stringify(resContent));
         res.end();
 
-        callback();
+        asyncNext();
 
       }
 
