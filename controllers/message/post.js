@@ -3,6 +3,7 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 var Recipient = require('../../models/recipient').Recipient;
 var Message = require('../../models/message').Message;
+var Form = require('../../models/form').Form;
 var bodyParser = require('body-parser');
 var config = require('nconf');
 var handlebars = require('handlebars');
@@ -18,27 +19,26 @@ var urlencoded = bodyParser.urlencoded({
 var templateSource = fs.readFileSync('template.hbs', 'utf8');
 var template = handlebars.compile(templateSource);
 
+var resContent = {
+  status: null,
+  data: {}
+};
+var validates = true;
+
+var recipient = false;
+var message = false;
+var form = false;
+
 module.exports = function(app, req, res) {
 
   urlencoded(req, res, function() {
 
-    // params
     var from = typeof req.body.from !== 'undefined' ? req.body.from : false;
     var to = typeof req.body.to !== 'undefined' ? req.body.to : false;
     var recipientID = typeof req.body.recipientID !== 'undefined' ? req.body.recipientID : false;
     var subject = typeof req.body.subject !== 'undefined' ? req.body.subject : '';
     var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
     var formID = typeof req.body.formID !== 'undefined' ? req.body.formID : false;
-
-    // other vars
-    var resContent = {
-      status: null,
-      data: {}
-    };
-    var validates = true;
-    var recipient = false;
-
-    var message;
 
     async.series([
 
@@ -59,6 +59,14 @@ module.exports = function(app, req, res) {
           resContent.data.subject = 'Missing "subject" parameter.';
         }
 
+        asyncNext();
+
+      },
+
+      // maybe load recipient
+      // (this and form load could be happening in parallel)
+      function(asyncNext) {
+
         if (recipientID) {
           Recipient.findById(recipientID, function(err, doc) {
             recipient = doc;
@@ -70,11 +78,24 @@ module.exports = function(app, req, res) {
 
       },
 
+      // maybe load form
+      function(asyncNext) {
+
+        if (formID) {
+          Form.findById(formID, function(err, doc) {
+            form = doc;
+            asyncNext();
+          })
+        } else {
+          asyncNext();
+        }
+
+      },
+
       // write for invalid response
       function(asyncNext) {
 
         if (!validates) {
-          console.log('doesnt validate');
           res.writeHead(400);
           resContent.status = 'fail';
           res.write(JSON.stringify(resContent));
@@ -86,12 +107,14 @@ module.exports = function(app, req, res) {
 
       },
 
-      // create message
+      // create message, pair message with form and recipient
       function(asyncNext) {
 
-        body = template({
-          name: 'Personname'
-        });
+        if (!body) {
+          body = template({
+            form: form.html
+          });
+        }
 
         if (recipient) {
           to = recipient.email;
