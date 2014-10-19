@@ -1,3 +1,4 @@
+var async = require('async');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var Form = require('../../models/form').Form;
@@ -18,6 +19,9 @@ module.exports = function(app, req, res) {
       data: {}
     };
     var validates = true;
+
+    var form;
+    var _fields;
 
     async.series([
 
@@ -63,31 +67,20 @@ module.exports = function(app, req, res) {
       // create form
       function(callback) {
 
+        form = new Form({
+          name: name,
+          fields: fields
+        });
+
+        console.log(form.html);
+
+        form.save();
+
+        callback();
+
       }
 
     ]);
-
-    if (!name || !fields) {
-
-      res.writeHead(400);
-      resContent.status = 'fail';
-      resContent.data = {};
-      if (!name) {
-        resContent.data.from = 'Missing "name" parameter.';
-      }
-      if (!fields) {
-        resContent.data.to = 'Missing "fields" parameter (JSON encoded string).';
-      }
-
-      res.write(JSON.stringify(resContent));
-      res.end();
-
-    } else {
-
-      fields = JSON.parse(fields);
-      res.end();
-
-    }
 
   });
 
