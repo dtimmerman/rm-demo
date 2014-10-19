@@ -21,7 +21,7 @@ module.exports = function(app, req, res) {
       res.end();
     });
 
-  // get all messages
+  // get all response
   } else {
 
     FormResponse.find({}, function(e, doc) {
