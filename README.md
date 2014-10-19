@@ -4,7 +4,9 @@ todo
 
 # 2. REQUIREMENTS
 
-todo
+* NodeJS
+* Mongodb
+* CLI or other REST client (e.g. Advanced REST Client)
 
 # 3. SETUP
 
@@ -18,11 +20,16 @@ API endpoints are structured as http://domain/api/v1/foobar. In production this 
 
 # 5. TODO
 
-- validator.js
-- exception handling
-- mailgun callback error handling
-- unit test
-- email form html
-- tracker pixel
+definitely:
+- rework message model to create html like form model
 - form response endpoint
 - admin ui
+- mongoose-fakery
+- cli one liners
+
+hopefully:
+- unit test
+- mailgun callback error handling
+- exception handling
+- tracker pixel
+- validator.js
