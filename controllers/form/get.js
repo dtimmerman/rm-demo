@@ -13,7 +13,7 @@ module.exports = function(app, req, res) {
   // get single message
   if (formID) {
 
-    Form.findById(formID, function(err, doc) {
+    Form.findById(formID, function(e, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = [doc];
@@ -24,7 +24,7 @@ module.exports = function(app, req, res) {
   // get all messages
   } else {
 
-    Form.find({}, function(err, doc) {
+    Form.find({}, function(e, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = doc;

@@ -13,7 +13,7 @@ module.exports = function(app, req, res) {
   // get single message
   if (messageID) {
 
-    Message.findById(messageID, function(err, doc) {
+    Message.findById(messageID, function(e, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = [doc];
@@ -24,7 +24,7 @@ module.exports = function(app, req, res) {
   // get all messages
   } else {
 
-    Message.find({}, function(err, doc) {
+    Message.find({}, function(e, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = doc;

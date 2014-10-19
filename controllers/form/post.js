@@ -7,21 +7,21 @@ var urlencoded = bodyParser.urlencoded({
   extended: false
 });
 
+var resContent = {
+  status: null,
+  data: {}
+};
+var validates = true;
+
+var form;
+var _fields;
+
 module.exports = function(app, req, res) {
 
   urlencoded(req, res, function() {
 
     var name = typeof req.body.name !== 'undefined' ? req.body.name : false;
     var fields = typeof req.body.fields !== 'undefined' ? req.body.fields : false;
-
-    var resContent = {
-      status: null,
-      data: {}
-    };
-    var validates = true;
-
-    var form;
-    var _fields;
 
     async.series([
 

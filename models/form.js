@@ -10,6 +10,7 @@ var FormSchema = new mongoose.Schema({
       return JSON.parse(fields);
     }
   },
+  redirectUrl: String,
   created: {
     type: Date,
     default: Date.now
@@ -61,7 +62,7 @@ function makeFormHtml(fields, formID, recipientID, recipientEmail, messageID) {
   var template = handlebars.compile(templateSource);
 
   return template({
-    action: 'http://localhost:3000/api/v1/form/respond',
+    action: 'http://localhost:3000/api/v1/form/response',
     fields: fields,
     formID: formID,
     recipientID: recipientID,

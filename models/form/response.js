@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var FormResponseSchema = new mongoose.Schema({
   _formID: mongoose.Schema.Types.ObjectId,
+  _messageID: mongoose.Schema.Types.ObjectId,
   _recipientID: {},
   recipientEmail: {},
   fieldValues: {

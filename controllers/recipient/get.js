@@ -13,7 +13,7 @@ module.exports = function(app, req, res) {
   // get single recipient
   if (recipientID) {
 
-    Recipient.findById(recipientID, function(err, doc) {
+    Recipient.findById(recipientID, function(e, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = [doc];
@@ -24,7 +24,7 @@ module.exports = function(app, req, res) {
   // get all recipients
   } else {
 
-    Recipient.find({}, function(err, doc) {
+    Recipient.find({}, function(e, doc) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = doc;

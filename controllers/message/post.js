@@ -143,7 +143,6 @@ module.exports = function(app, req, res) {
           });
           message.body = body;
           message.save(function(e, doc) {
-            console.log(message);
             asyncNext();
           });
 

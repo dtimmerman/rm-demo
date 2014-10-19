@@ -41,7 +41,7 @@ module.exports = function(app, req, res) {
         email: email
       });
 
-      recipient.save(function(err, doc) {
+      recipient.save(function(e, doc) {
         res.writeHead(200);
         resContent.status = 'success';
         resContent.data = recipient;
