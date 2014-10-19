@@ -9,6 +9,7 @@ config.argv().env().file({
 
 mongoose.connect(config.get('mongoose:connectionUrl'));
 
+app.use(express.static(__dirname + '/public'));
 app.disable('x-powered-by');
 app.listen(3000);
 
@@ -68,4 +69,16 @@ app.get('/api/v1/form/response/:responseID?', function(req, res) {
 app.post('/api/v1/form/response', function(req, res) {
   console.log('POST form/response');
   require('./controllers/form/response/post')(app, req, res);
+});
+
+// ADMIN
+app.get('/admin', function(req, res) {
+  console.log('GET admin');
+  require('./controllers/admin/get')(app, req, res);
+});
+
+app.all('*', function(req, res) {
+  res.writeHead(200);
+  res.write('rm-demo nothing matches');
+  res.end();
 });

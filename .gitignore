@@ -1,5 +1,6 @@
 # ignore vendor packages
 node_modules
+public/components
 
 # ignore logs
 npm-debug.log

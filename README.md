@@ -21,7 +21,6 @@ API endpoints are structured as http://domain/api/v1/foobar. In production this 
 # 5. TODO
 
 definitely:
-- form response endpoint
 - admin ui
 - mongoose-fakery
 - cli one liners
