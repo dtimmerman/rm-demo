@@ -72,9 +72,9 @@ module.exports = function(app, req, res) {
           fields: fields
         });
 
-        console.log(form.html);
-
         form.save();
+
+        res.end();
 
         callback();
 

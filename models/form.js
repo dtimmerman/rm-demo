@@ -1,4 +1,6 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
+var fs = require('fs');
+var handlebars = require('handlebars');
 
 var FormSchema = new mongoose.Schema({
   name: String,
@@ -19,11 +21,47 @@ var FormSchema = new mongoose.Schema({
 FormSchema.virtual('html').get(function() {
 
   var fields = this.fields;
-  var html = '';
+  var htmlFields = '';
 
-  return html;
+  var html;
+
+  for (var key in fields) {
+    var field = fields[key];
+    var fieldHtml = makeFieldHtml(field);
+    htmlFields = htmlFields + fieldHtml;
+  }
+
+  return makeFormHtml(htmlFields, this._id, '123456', 'timmermanderek@gmail.com');
 
 });
+
+function makeFormHtml(fields, formID, recipientID, recipientEmail) {
+
+  var templateSource = fs.readFileSync('views/form/form.hbs', 'utf8');
+  var template = handlebars.compile(templateSource);
+
+  return template({
+    action: 'http://localhost:3000/api/v1/form/respond',
+    fields: fields,
+    formID: formID,
+    recipientID: recipientID,
+    recipientEmail: recipientEmail
+  });
+
+}
+
+function makeFieldHtml(field) {
+
+  var templateSource = fs.readFileSync('views/form/' + field.type + '.hbs', 'utf8');
+  var template = handlebars.compile(templateSource);
+
+  return template({
+    name: field.name,
+    label: field.label,
+    value: field.value
+  });
+
+}
 
 var Form = mongoose.model('Form', FormSchema);
 
