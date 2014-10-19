@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var FormResponse = require('../../models/form/response').FormResponse;
+var FormResponse = require('../../../models/form/response').FormResponse;
 
 var resContent = {
   status: null,

@@ -10,7 +10,7 @@ module.exports = function(app, req, res) {
 
   var formID = typeof req.params.formID !== 'undefined' ? req.params.formID : false;
 
-  // get single message
+  // get single form
   if (formID) {
 
     Form.findById(formID, function(e, doc) {
@@ -21,7 +21,7 @@ module.exports = function(app, req, res) {
       res.end();
     });
 
-  // get all messages
+  // get all forms
   } else {
 
     Form.find({}, function(e, doc) {
