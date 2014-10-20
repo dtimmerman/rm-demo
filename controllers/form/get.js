@@ -28,6 +28,8 @@ module.exports = function(app, req, res) {
       res.writeHead(200);
       resContent.status = 'success';
       resContent.data = doc;
+      resContent.forms = doc;
+      resContent.form = doc;
       res.write(JSON.stringify(resContent));
       res.end();
     })
