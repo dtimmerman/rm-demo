@@ -44,7 +44,7 @@ module.exports = function(app, req, res) {
       recipient.save(function(e, doc) {
         res.writeHead(200);
         resContent.status = 'success';
-        resContent.data = recipient;
+        resContent.data = [recipient];
         res.write(JSON.stringify(resContent));
         res.end();
       });
