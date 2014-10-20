@@ -5,7 +5,7 @@ App.Router.map(function() {
 App.IndexRoute = Ember.Route.extend({
   model: function(params) {
     return this.store.find('form').then(function(form) {
-      console.log(form);
+      // console.log(form);
       // return form;
     });
   }
