@@ -8,17 +8,6 @@ var urlencoded = bodyParser.urlencoded({
   extended: false
 });
 
-var resContent = {
-  status: null,
-  data: {}
-};
-var validates = true;
-
-var fields = false;
-var fieldValues = [];
-var form = false;
-var formResponse = false;
-
 module.exports = function(app, req, res) {
 
   urlencoded(req, res, function() {
@@ -27,6 +16,17 @@ module.exports = function(app, req, res) {
     var messageID = typeof req.body.messageID !== 'undefined' ? req.body.messageID : false;
     var recipientID = typeof req.body.recipientID !== 'undefined' ? req.body.recipientID : false;
     var recipientEmail = typeof req.body.recipientEmail !== 'undefined' ? req.body.recipientEmail : false;
+
+    var resContent = {
+      status: null,
+      data: {}
+    };
+    var validates = true;
+
+    var fields = false;
+    var fieldValues = [];
+    var form = false;
+    var formResponse = false;
 
     async.series([
 

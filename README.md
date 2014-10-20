@@ -33,10 +33,10 @@ Emails are delivered via Mailgun.
 
 In CLI (replace name and email with your name and email address):
 ```
-curl -i -H "Accept: *" -X POST -d "name=Derek Timmerman&email=timmermanderek@gmail.com" http://localhost:3000/api/v1/recipients
+curl -i -H "Accept: *" -X POST -d "name=Derek Timmerman&email=timmermanderek@gmail.com" http://localhost:3000/api/v1/recipient
 ```
 
-Alternatively, if you're using a visual REST client, your request should be a POST to http://localhost:3000/api/v1/recipients, with two form fields:
+Alternatively, if you're using a visual REST client, your request should be a POST to http://localhost:3000/api/v1/recipient, with two form fields:
 * name: `Derek Timmerman`
 * email: `timmermanderek@gmail.com`
 
@@ -58,14 +58,14 @@ Response body should look like:
 
 In the response body, take note of the value for data[0]._id. This is your __recipient ID__. It should be a random-like string, e.g. "544461dc0eb2509d55c0b971". This will be later used when you send your embedded-form email.
 
-### Next, create your form, which will eventually be embedded in an email, by using POST /api/v1/forms.
+### Next, create your form, which will eventually be embedded in an email, by using POST /api/v1/form.
 
 In CLI:
 ```
-curl -i -H "Accept: *" -X POST -d 'name=Email Survey&fields=[{"name":"firstname","label":"First Name","type":"text"},{"name":"lastname","label":"Last Name","type":"text"},{"name":"message","label":"Message","type":"textarea"}]' http://localhost:3000/api/v1/forms
+curl -i -H "Accept: *" -X POST -d 'name=Email Survey&fields=[{"name":"firstname","label":"First Name","type":"text"},{"name":"lastname","label":"Last Name","type":"text"},{"name":"message","label":"Message","type":"textarea"}]' http://localhost:3000/api/v1/form
 ```
 
-Alternatively, if you're using a visual REST client, your request should be a POST to http://localhost:3000/api/v1/forms, with two form fields:
+Alternatively, if you're using a visual REST client, your request should be a POST to http://localhost:3000/api/v1/form, with two form fields:
 * name: `Email Survey`
 * fields: `[{"name":"firstname","label":"First Name","type":"text"},{"name":"lastname","label":"Last Name","type":"text"},{"name":"message","label":"Message","type":"textarea"}]`
 

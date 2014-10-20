@@ -4,9 +4,14 @@ App.Router.map(function() {
 
 App.IndexRoute = Ember.Route.extend({
   model: function(params) {
+    /*
     return this.store.find('form').then(function(form) {
-      // console.log(form);
-      // return form;
+    });
+    */
+    var url = 'http://localhost:3000/api/v1/form';
+    return Ember.$.getJSON(url).then(function(data) {
+      console.log(data.data);
+      return data.data;
     });
   }
 });

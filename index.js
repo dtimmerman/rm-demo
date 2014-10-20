@@ -14,20 +14,20 @@ app.disable('x-powered-by');
 app.listen(3000);
 
 /**
- *  GET recipients
+ *  GET recipient
  *
  *  Retrieve a Recipient, which represents a user that can be sent emails and form emails.
  *
  *  Params:
  *  - recipientID: id of Recipient object. Expects string. Required.
  */
-app.get('/api/v1/recipients/:recipientID?', function(req, res) {
-  console.log('GET recipients');
+app.get('/api/v1/recipient/:recipientID?', function(req, res) {
+  console.log('GET recipient');
   require('./controllers/recipient/get')(app, req, res);
 });
 
 /**
- *  POST recipients
+ *  POST recipient
  *
  *  Create a Recipient.
  *
@@ -35,13 +35,13 @@ app.get('/api/v1/recipients/:recipientID?', function(req, res) {
  *  - name: name of person. Expects string. Required.
  *  - email: email address of person. Expects string. Required.
  */
-app.post('/api/v1/recipients', function(req, res) {
-  console.log('POST recipients');
+app.post('/api/v1/recipient', function(req, res) {
+  console.log('POST recipient');
   require('./controllers/recipient/post')(app, req, res);
 });
 
 /**
- *  GET messages
+ *  GET message
  *
  *  Retrieve a Message (email), which represents an email that has been
  *  sent to a Recipient or static email address.
@@ -52,13 +52,13 @@ app.post('/api/v1/recipients', function(req, res) {
  *  Params:
  *  - messageID: id of Message object. Expects string. Optional.
  */
-app.get('/api/v1/messages/:messageID?', function(req, res) {
-  console.log('GET messages');
+app.get('/api/v1/message/:messageID?', function(req, res) {
+  console.log('GET message');
   require('./controllers/message/get')(app, req, res);
 });
 
 /**
- *  POST messages
+ *  POST message
  *
  *  Create a Message, which will be delivered through Mailgun ASAP.
  *
@@ -80,13 +80,13 @@ app.get('/api/v1/messages/:messageID?', function(req, res) {
  *  - subject: subject line of Message. Expects string. Required.
  *  - formID: id of Form to embed within Message. Expects string.
  */
-app.post('/api/v1/messages', function(req, res) {
-  console.log('POST messages');
+app.post('/api/v1/message', function(req, res) {
+  console.log('POST message');
   require('./controllers/message/post')(app, req, res);
 });
 
 /**
- *  GET forms
+ *  GET form
  *
  *  Retrieve a Form.
  *
@@ -96,9 +96,9 @@ app.post('/api/v1/messages', function(req, res) {
  *  Params:
  *  - formID: id of Form object. Expects string. Optional.
  */
-app.get('/api/v1/forms/:formID?', function(req, res, next) {
-  console.log('GET forms');
-  if (typeof req.params.formID !== 'undefined' && req.params.formID === 'responses') {
+app.get('/api/v1/form/:formID?', function(req, res, next) {
+  console.log('GET form');
+  if (typeof req.params.formID !== 'undefined' && req.params.formID === 'response') {
     next();
   } else {
     require('./controllers/form/get')(app, req, res);
@@ -106,7 +106,7 @@ app.get('/api/v1/forms/:formID?', function(req, res, next) {
 });
 
 /**
- *  POST forms
+ *  POST form
  *
  *  Create a Form, which can be embedded within a Message.
  *
@@ -138,13 +138,13 @@ app.get('/api/v1/forms/:formID?', function(req, res, next) {
       }
     ]
  */
-app.post('/api/v1/forms', function(req, res) {
-  console.log('POST forms');
+app.post('/api/v1/form', function(req, res) {
+  console.log('POST form');
   require('./controllers/form/post')(app, req, res);
 });
 
 /**
- *  GET forms/responses
+ *  GET form/response
  *
  *  Retrieve a FormResponse. A FormResponse consists of values submitted
  *  in response to an emailed Form, plus relevant meta data (id of Recipient
@@ -156,21 +156,21 @@ app.post('/api/v1/forms', function(req, res) {
  *  Params:
  *  - responseID: id of FormResponse object. Expects string. Optional.
  */
-app.get('/api/v1/forms/responses/:responseID?', function(req, res) {
-  console.log('GET forms/responses');
+app.get('/api/v1/form/response/:responseID?', function(req, res) {
+  console.log('GET form/response');
   require('./controllers/form/response/get')(app, req, res);
 });
 
 /**
- *  POST forms/responses
+ *  POST form/response
  *
  *  Create a FormResponse.
  *
  *  Params:
  *  -
  */
-app.post('/api/v1/forms/responses', function(req, res) {
-  console.log('POST forms/responses');
+app.post('/api/v1/form/response', function(req, res) {
+  console.log('POST form/response');
   require('./controllers/form/response/post')(app, req, res);
 });
 
