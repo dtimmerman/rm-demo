@@ -6,19 +6,19 @@ var urlencoded = bodyParser.urlencoded({
   extended: false
 });
 
+var resContent = {
+  status: null,
+  data: null
+};
+
+var recipient;
+
 module.exports = function(app, req, res) {
 
   urlencoded(req, res, function() {
 
-    var recipient;
-
     var name = typeof req.body.name !== 'undefined' ? req.body.name : false;
     var email = typeof req.body.email !== 'undefined' ? req.body.email : false;
-
-    var resContent = {
-      status: null,
-      data: null
-    };
 
     if (!name || !email) {
 

@@ -1,14 +1,14 @@
 var mongoose = require('mongoose');
 var Recipient = require('../../models/recipient').Recipient;
 
+var resContent = {
+  status: null,
+  data: {}
+};
+
 module.exports = function(app, req, res) {
 
   var recipientID = typeof req.params.recipientID !== 'undefined' ? req.params.recipientID : false;
-
-  var resContent = {
-    status: null,
-    data: {}
-  };
 
   // get single recipient
   if (recipientID) {
