@@ -23,9 +23,6 @@ module.exports = function(app, req, res) {
     var name = typeof req.body.name !== 'undefined' ? req.body.name : false;
     var fields = typeof req.body.fields !== 'undefined' ? req.body.fields : false;
 
-    console.log(fields);
-    console.log(typeof fields);
-
     async.series([
 
       // validation

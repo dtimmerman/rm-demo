@@ -1,9 +1,11 @@
 App.Router.map(function() {
-  this.resource('admin', { path: '/admin' });
+  this.resource('index', { path: '/' });
 });
 
-App.AdminRoute = Ember.Route.extend({
-  model: function() {
-    return this.store.find('form');
+App.IndexRoute = Ember.Route.extend({
+  model: function(params) {
+    this.store.find('form').then(function(form) {
+      // console.log(form);
+    });
   }
 });

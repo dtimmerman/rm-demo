@@ -28,6 +28,7 @@ var validates = true;
 var recipient = false;
 var message = false;
 var form = false;
+var body = false;
 
 module.exports = function(app, req, res) {
 
@@ -37,7 +38,7 @@ module.exports = function(app, req, res) {
     var to = typeof req.body.to !== 'undefined' ? req.body.to : false;
     var recipientID = typeof req.body.recipientID !== 'undefined' ? req.body.recipientID : false;
     var subject = typeof req.body.subject !== 'undefined' ? req.body.subject : '';
-    var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
+    // var body = typeof req.body.body !== 'undefined' ? req.body.body : false;
     var formID = typeof req.body.formID !== 'undefined' ? req.body.formID : false;
 
     async.series([
