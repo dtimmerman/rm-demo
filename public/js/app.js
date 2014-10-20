@@ -1,7 +1,3 @@
-window.Rebelmail = Ember.Application.create();
+window.App = Ember.Application.create();
 
-Rebelmail.ApplicationAdapter = DS.FixtureAdapter.extend();
-
-// Rebelmail.Adapter = DS.RESTAdapter.extend({
-//   namespace: 'api/v1'
-// });
+App.ApplicationAdapter = DS.FixtureAdapter.extend();

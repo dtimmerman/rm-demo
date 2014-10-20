@@ -1,8 +1,8 @@
-Rebelmail.Router.map(function() {
-  this.resource('forms', { path: '/admin' });
+App.Router.map(function() {
+  this.resource('admin', { path: '/admin' });
 });
 
-Rebelmail.FormsRoute = Ember.Route.extend({
+App.AdminRoute = Ember.Route.extend({
   model: function() {
     return this.store.find('form');
   }

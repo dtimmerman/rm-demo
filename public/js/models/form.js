@@ -1,9 +1,9 @@
-Rebelmail.Form = DS.Model.extend({
+App.Form = DS.Model.extend({
   name: DS.attr('string'),
   id: DS.attr('string')
 });
 
-Rebelmail.Form.Fixtures = [
+App.Form.Fixtures = [
   {
     name: 'test form name',
     id: '1'
