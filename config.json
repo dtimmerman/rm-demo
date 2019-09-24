@@ -1,0 +1,9 @@
+{
+  "mailgun" : {
+    "apiKey" : "",
+    "domain" : ""
+  },
+  "mongoose" : {
+    "connectionUrl" : "mongodb://localhost/rm"
+  }
+}

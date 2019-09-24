@@ -1,13 +1,13 @@
 {
   "name": "rm-demo",
   "version": "0.1.0",
-  "description": "Homework assignment for RebelMail",
+  "description": "Homework assignment",
   "repository": {
     "type": "git",
     "url": "@todo"
   },
   "author": "Derek Timmerman <timmermanderek@gmail.com>",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "bugs": {
     "url": "@todo"
   },
